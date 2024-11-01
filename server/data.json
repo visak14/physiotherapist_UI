@@ -1,0 +1,125 @@
+{
+  "exerciseCategories": [
+    {
+      "name": "Lower Body",
+      "exercises": [
+        {
+          "name": "Squats",
+          "sets": 3,
+          "reps": 15,
+          "holdTime": 0,
+          "side": "Both"
+        },
+        {
+          "name": "Lunges",
+          "sets": 3,
+          "reps": 12,
+          "holdTime": 0,
+          "side": "Left"
+        },
+        {
+          "name": "Deadlifts",
+          "sets": 4,
+          "reps": 10,
+          "holdTime": 0,
+          "side": "Right"
+        }
+      ]
+    },
+    {
+      "name": "Upper Body",
+      "exercises": [
+        {
+          "name": "Push-ups",
+          "sets": 4,
+          "reps": 12,
+          "holdTime": 0,
+          "side": "Both"
+        },
+        {
+          "name": "Bicep Curls",
+          "sets": 3,
+          "reps": 15,
+          "holdTime": 0,
+          "side": "Left"
+        },
+        {
+          "name": "Tricep Dips",
+          "sets": 3,
+          "reps": 10,
+          "holdTime": 0,
+          "side": "Right"
+        }
+      ]
+    },
+    {
+      "name": "Core",
+      "exercises": [
+        {
+          "name": "Plank",
+          "sets": 3,
+          "reps": 30,
+          "holdTime": 30,
+          "side": "Both"
+        },
+        {
+          "name": "Russian Twists",
+          "sets": 3,
+          "reps": 15,
+          "holdTime": 0,
+          "side": "Left"
+        },
+        {
+          "name": "Bicycle Crunches",
+          "sets": 4,
+          "reps": 20,
+          "holdTime": 0,
+          "side": "Right"
+        }
+      ]
+    }
+  ],
+  "savedPrograms": [
+    {
+      "name": "Combo 11/1/2024, 9:45:34 AM",
+      "exercises": [
+        {
+          "exercise": "Lunges",
+          "sets": 5,
+          "reps": 12,
+          "holdTime": 8,
+          "side": "Both",
+          "stage": "Intermediate",
+          "weight": 5
+        },
+        {
+          "exercise": "Lunges",
+          "sets": 9,
+          "reps": 15,
+          "holdTime": 11,
+          "side": "Left",
+          "stage": "Advanced",
+          "weight": 10
+        },
+        {
+          "exercise": "Lunges",
+          "sets": 5,
+          "reps": 12,
+          "holdTime": 11,
+          "side": "Right",
+          "stage": "Intermediate",
+          "weight": 5
+        }
+      ],
+      "days": [
+        "S",
+        "Su",
+        "M"
+      ],
+      "sessionsPerDay": 4,
+      "notes": "damn",
+      "id": null
+    }
+   
+  ]
+}
