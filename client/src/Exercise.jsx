@@ -1,7 +1,10 @@
 import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCaretDown, faBars, faTrash } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCaretDown,
+  faTrash,
+} from "@fortawesome/free-solid-svg-icons";
 
 const Exercise = () => {
   const [bodyParts, setBodyParts] = useState([]);
@@ -20,9 +23,9 @@ const Exercise = () => {
 
   const handleOutsideClick = (event) => {
     if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-      setDropdownVisible(Array(selectedExercises.length).fill(false)); 
+      setDropdownVisible(Array(selectedExercises.length).fill(false));
+    }
   };
-}
 
   const fetchSavedPrograms = async () => {
     try {
@@ -36,7 +39,7 @@ const Exercise = () => {
   };
 
   useEffect(() => {
-    fetchSavedPrograms(); 
+    fetchSavedPrograms();
   }, []);
 
   useEffect(() => {
@@ -46,7 +49,6 @@ const Exercise = () => {
     };
   }, []);
 
- 
   useEffect(() => {
     const fetchBodyParts = async () => {
       try {
@@ -72,13 +74,7 @@ const Exercise = () => {
     }
   };
 
-  const toggleDropdownBars = (index) => {
-    setDropdownVisible((prev) => {
-      const newVisibility = [...prev];
-      newVisibility[index] = !newVisibility[index]; // Toggle visibility for the specific exercise
-      return newVisibility;
-    });
-  };
+  
 
   const handleExerciseSelect = (exercise) => {
     if (!selectedExercises.find((e) => e.name === exercise.name)) {
@@ -89,9 +85,9 @@ const Exercise = () => {
           side: null,
           holdTime: exercise.holdTime || 0,
           stage: exercise.stage || "Beginner",
-          weight: exercise.weight || 0, 
-          sets: 0, 
-          reps: 0, 
+          weight: exercise.weight || 0,
+          sets: 0,
+          reps: 0,
         },
       ]);
       setDropdownVisible((prev) => [...prev, false]);
@@ -131,10 +127,10 @@ const Exercise = () => {
         exercise: ex.name,
         sets: ex.sets || 0,
         reps: ex.reps || 0,
-        holdTime: ex.holdTime || 0, 
+        holdTime: ex.holdTime || 0,
         side: ex.side || "Both",
-        stage: ex.stage || "Beginner", 
-        weight: ex.weight || 0, 
+        stage: ex.stage || "Beginner",
+        weight: ex.weight || 0,
       })),
       days: therapyDays,
       sessionsPerDay: sessionsPerDay,
@@ -160,13 +156,13 @@ const Exercise = () => {
     setDropdownVisible([]);
     setTherapistNotes("");
     setSessionsPerDay(0);
-    setTherapyDays([]); 
+    setTherapyDays([]);
   };
 
   const handleInputChange = (index, field, value) => {
     const updatedExercises = [...selectedExercises];
-    const intValue = Math.max(0, Number(value)); 
-    updatedExercises[index][field] = isNaN(intValue) ? 0 : intValue; 
+    const intValue = Math.max(0, Number(value));
+    updatedExercises[index][field] = isNaN(intValue) ? 0 : intValue;
     setSelectedExercises(updatedExercises);
   };
 
@@ -178,42 +174,262 @@ const Exercise = () => {
     const updatedExercises = selectedExercises.filter((_, i) => i !== index);
     setSelectedExercises(updatedExercises);
   };
-  
 
   const onDragOver = (event) => {
     event.preventDefault();
   };
   const onDrop = (event, index) => {
     event.preventDefault();
-    if (draggedExerciseIndex === null) return; 
+    if (draggedExerciseIndex === null) return;
     const updatedExercises = [...selectedExercises];
     const draggedExercise = updatedExercises[draggedExerciseIndex];
-    updatedExercises.splice(draggedExerciseIndex, 1); 
-    updatedExercises.splice(index, 0, draggedExercise); 
+    updatedExercises.splice(draggedExerciseIndex, 1);
+    updatedExercises.splice(index, 0, draggedExercise);
     setSelectedExercises(updatedExercises);
-    setDraggedExerciseIndex(null); 
+    setDraggedExerciseIndex(null);
   };
 
   return (
     <div className="flex h-[100vh] w-[100vw] justify-center">
-      <div className="border-2 justify-center my-32 border-gray-200 rounded-md h-[50vh] w-[75vw]">
-        <div className="relative inline-block h-1/3  text-left w-full ">
-          <div className="flex justify-between  items-center my-4 px-4">
+      <div className=" justify-center my-32 rounded-md h-[50vh] w-[75vw]">
+        
+
+      <div className="relative inline-block h-[20%] text-left w-full">
+  <div className="flex flex-row justify-between w-full gap-2 items-center my-4 px-2 sm:px-4">
+    <div className="flex w-full md:w-3/4 gap-2">
+      <button
+        className="text-gray-500 border-2 border-gray-500 text-center w-1/2 py-2 rounded-md shadow-lg flex items-center justify-center"
+      >
+        Knee Rehab Exercise
+      </button>
+      <button
+        className="bg-white text-gray-500 border-2 border-gray-500 w-1/2 py-2 rounded-md shadow-lg flex items-center justify-between px-4"
+      >
+        Select Combos
+        <FontAwesomeIcon icon={faCaretDown} />
+      </button>
+    </div>
+    <div className="flex  lg:w-[25%] md:w-[50%]  ">
+      <button
+        onClick={clearAll}
+        className="text-red-400 border-red-400 border-2 w-full py-2 rounded-md shadow-lg flex items-center justify-center"
+      >
+        Clear All
+      </button>
+    </div>
+  </div>
+</div>
+
+
+        <div
+  onDragOver={onDragOver}
+  ref={wrapperRef}
+  className="border-2 border-gray-400 p-2 rounded-md gap-2 my-2 h-[50%] w-full md:w-[100%] lg:w-full xl:w-full overflow-auto"
+>
+  {selectedExercises.map((exercise, index) => (
+    <div
+      draggable
+      onDragStart={() => onDragStart(index)}
+      onDrop={(event) => onDrop(event, index)}
+      key={index}
+      className="p-4 bg-blue-50 border-2 border-gray-100 my-2 rounded-lg space-y-4"
+    >
+      <div className="flex items-center justify-between space-x-4">
+        <span className="text-md font-semibold text-gray-700 flex-grow">
+          {exercise.name}
+        </span>
+
+        <div className="flex items-center space-x-2">
+          <label className="relative inline-flex items-center cursor-pointer">
+            <input
+              type="checkbox"
+              className="sr-only"
+              onChange={() =>
+                toggleSide(index, exercise.side === "Left" ? "Right" : "Left")
+              }
+              checked={exercise.side === "Right"}
+            />
+            <div className="w-20 h-10 pt-2 pl-2 bg-white rounded-sm shadow-inner">
+              <span className="text-sm gap-2  font-medium text-black text-center">
+                {exercise.side === "Right" ? "Left  " : "Right"}
+                {exercise.side === "Right" ? "Left" : " Right"}
+              </span>
+            </div>
+            
+            <div
+              className={`absolute w-10 h-6 pl-2 bg-blue-500 rounded-md transform transition-transform duration-300 ${
+                exercise.side === "Right" ? "translate-x-8" : "translate-x-1"
+              }`}
+            >
+              <span className="text-sm font-medium text-white text-center">
+                {exercise.side === "Right" ? "Right" : "Left"}
+              </span>
+            </div>
+          </label>
+        </div>
+
+        <button
+          onClick={() => duplicateExercise(index)}
+          className="px-2 py-1 text-sm bg-blue-500 text-white rounded-full hover:bg-blue-600"
+        >
+          Duplicate
+        </button>
+
+        <button
+          onClick={() => handleExerciseDelete(index)}
+          className="p-1 rounded-md text-gray-500 hover:text-red-500"
+        >
+          <FontAwesomeIcon icon={faTrash} className="text-lg" />
+        </button>
+      </div>
+
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:gap-5 lg:w-[85%] lg:grid-cols-5 gap-4 md:gap-2">
+        <div className="flex items-center w-full lg:gap-5 lg:text-lg   bg-white px-2 py-1 rounded-md space-x-1">
+          <label className="text-sm">Sets</label>
+          <button
+            onClick={() =>
+              handleInputChange(index, "sets", Math.max(0, exercise.sets - 1))
+            }
+            className="px-2 bg-gray-300 rounded-md"
+          >
+            -
+          </button>
+          <input
+            type="number"
+            value={exercise.sets || 0}
+            readOnly
+            className="w-10 text-center bg-transparent outline-none text-gray-700"
+          />
+          <button
+            onClick={() =>
+              handleInputChange(index, "sets", exercise.sets + 1)
+            }
+            className="px-2 bg-gray-300 rounded-md"
+          >
+            +
+          </button>
+        </div>
+
+        <div className="flex items-center w-full lg:gap-5 lg:text-lg bg-white px-2 py-1 rounded-md space-x-1">
+          <label className="text-sm">Reps</label>
+          <button
+            onClick={() =>
+              handleInputChange(index, "reps", Math.max(0, exercise.reps - 1))
+            }
+            className="px-2 bg-gray-300 rounded-md"
+          >
+            -
+          </button>
+          <input
+            type="number"
+            value={exercise.reps || 0}
+            readOnly
+            className="w-10 text-center bg-transparent outline-none text-gray-700"
+          />
+          <button
+            onClick={() =>
+              handleInputChange(index, "reps", exercise.reps + 1)
+            }
+            className="px-2 bg-gray-300 rounded-md"
+          >
+            +
+          </button>
+        </div>
+
+        <div className="flex items-center w-full bg-white lg:gap-2 lg:text-lg px-2 py-1 rounded-md space-x-1">
+          <label className="text-sm">Hold Time</label>
+          <button
+            onClick={() =>
+              handleInputChange(
+                index,
+                "holdTime",
+                Math.max(0, exercise.holdTime - 1)
+              )
+            }
+            className="px-2 bg-gray-300 rounded-md"
+          >
+            -
+          </button>
+          <input
+            type="number"
+            value={exercise.holdTime || 0}
+            readOnly
+            className="w-10 text-center bg-transparent outline-none text-gray-700"
+          />
+          <button
+            onClick={() =>
+              handleInputChange(index, "holdTime", exercise.holdTime + 1)
+            }
+            className="px-2 bg-gray-300 rounded-md"
+          >
+            +
+          </button>
+        </div>
+
+        <div className="flex items-center w-full bg-white px-2 py-1 lg:gap-5 lg:text-lg rounded-md space-x-1">
+          
+          <button
+            onClick={() =>
+              handleInputChange(
+                index,
+                "weight",
+                Math.max(0, exercise.weight - 1)
+              )
+            }
+            className="px-2 bg-gray-300 rounded-md"
+          >
+            -
+          </button>
+          
+          <input
+            type="number"
+            value={exercise.weight || 0}
+            readOnly
+            className="w-10 text-center bg-transparent outline-none text-gray-700"
+          />
+          <button
+            onClick={() =>
+              handleInputChange(index, "weight", exercise.weight + 1)
+            }
+            className="px-2 bg-gray-300 rounded-md"
+          >
+            +
+          </button>
+          <label className="text-sm">Kg</label>
+        </div>
+
+        <div className="flex flex-col items-center px-2 py-1 rounded-md w-full">
+  <select
+    value={exercise.stage || ""}
+   
+    onChange={(e) => handleInputChange(index, "stage", e.target.value)}
+    className="w-full bg-white text-gray-700 p-2 rounded border border-gray-300 outline-none"
+  >
+    
+    <option value="Beginner">Beginner</option>
+    <option value="Intermediate">Intermediate</option>
+    <option value="Advanced">Advanced</option>
+  </select>
+</div>
+
+      </div>
+    </div>
+  ))}
+</div>
+
+<div className="flex flex-col lg:flex-row justify-between my-10 mt-0 space-y-6 lg:space-y-0">
+          {/* Therapy Days */}
+          <div className="">
+          <div className="relative inline-block h-1/3  text-left w-full ">
+            <div className="flex flex-col lg:flex-row items-start lg:items-center space-y-4 lg:space-y-0">
             <button
-              className="bg-blue-500 text-white px-4 py-2 rounded-md shadow-lg flex items-center"
+              className=" text-gray-500  border-2 border-gray-400 px-4 py-2 rounded-md shadow-lg flex items-center"
               onClick={() => setDropdownOpen((prev) => !prev)}
             >
               Add Exercise
               <FontAwesomeIcon icon={faCaretDown} className="ml-2" />
             </button>
-            <button
-              onClick={clearAll}
-              className="bg-red-300 text-white px-4 py-2 rounded-md shadow-lg flex items-center"
-            >
-              Clear All
-            </button>
           </div>
-
           {dropdownOpen && (
             <ul className="absolute mt-2 w-36 bg-gray-100 rounded-md shadow-lg p-2 z-10">
               {bodyParts.map((bodyPart) => (
@@ -240,201 +456,150 @@ const Exercise = () => {
               ))}
             </ul>
           )}
-        </div>
 
-        <div 
-         onDragOver={onDragOver}
-            ref={wrapperRef}
-            
-        
-        className="border-t-2 border-gray-300  rounded-md gap-2 my-10 h-[50%] w-auto overflow-auto">
-          {selectedExercises.map((exercise, index) => (
-            <div
-  draggable
-  onDragStart={() => onDragStart(index)}
-  onDrop={(event) => onDrop(event, index)}
-  key={index}
-  className="mt-4 border-2 border-gray-400 p-4 bg-white rounded-lg shadow-md"
->
-  <div className="flex flex-col sm:flex-row items-center sm:justify-between space-y-4 sm:space-y-0">
-    <span className="text-lg font-semibold text-gray-700 text-center sm:text-left">
-      {exercise.name}
-    </span>
+          </div>
+          </div>
 
-    <div className="flex items-center space-x-4">
-      <label className="relative inline-flex items-center cursor-pointer">
-        <input
-          type="checkbox"
-          className="sr-only"
-          onChange={() => toggleSide(index, "Right")}
-          checked={exercise.side === "Right"}
-        />
-        <div className="w-14 h-8 bg-gray-200 rounded-full shadow-inner"></div>
-        <div
-          className={`absolute w-6 h-6 bg-blue-500 rounded-full transition-transform duration-300 ease-in-out ${
-            exercise.side === "Right" ? "transform translate-x-full" : ""
-          }`}
-        ></div>
-      </label>
-    </div>
+          {/* Sessions per Day */}
+          <div className="flex items-center gap-2 flex-col space-x-2">
+            <h3 className="font-semibold text-gray-700 text-start -ml-20">Daily Interval</h3>
 
-    <div className="relative" ref={dropdownRef}>
-      <button
-        onClick={() => toggleDropdownBars(index)}
-        className="bg-gray-200 p-1 rounded-md"
-      >
-        <FontAwesomeIcon icon={faBars} />
-      </button>
-      {dropdownVisible[index] && (
-        <div className="absolute right-0 mt-2 bg-white shadow-lg rounded-md p-2 w-40">
-          <button
-            onClick={() => duplicateExercise(index, "Left")}
-            disabled={selectedExercises.some(
-              (e) => e.id === exercise.id && e.side === "Left"
-            )}
-            className="block w-full hover:bg-gray-200 text-left"
-          >
-            Duplicate Left
-          </button>
-          <button
-            onClick={() => duplicateExercise(index, "Right")}
-            disabled={selectedExercises.some(
-              (e) => e.id === exercise.id && e.side === "Right"
-            )}
-            className="block w-full hover:bg-gray-200 text-left"
-          >
-            Duplicate Right
-          </button>
-        </div>
-      )}
-    </div>
+          <div className=" flex flex-row">
+          <div className="flex items-center rounded-md px-2">
+              <button
+               
+                className="text-white border w-5 h-15 bg-gray-300 hover:text-gray-700 focus:outline-none"
+              >
+                <span className="text-lg">−</span>
+              </button>
 
-    <button
-      onClick={() => handleExerciseDelete(index)}
-      className="p-1 rounded-md"
-    >
-      <FontAwesomeIcon icon={faTrash} className="text-red-200 w-5 h-5" />
-    </button>
-  </div>
+              <input
+                value={sessionsPerDay}
+                onChange={(e) =>
+                  setSessionsPerDay(Math.max(0, Number(e.target.value)))
+                }
+                className="w-12 text-center text-gray-700 focus:outline-none bg-transparent"
+                min="0"
+              />
 
-  <div className="mt-4 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
-    <div className="flex flex-col items-center bg-gray-200 p-2 rounded-md">
-      <label className="text-sm">Sets</label>
-      <input
-        type="number"
-        value={exercise.sets || 0}
-        onChange={(e) =>
-          handleInputChange(index, "sets", e.target.value)
-        }
-        className="mt-1 w-full sm:w-16 bg-white p-1 text-center rounded border-gray-300 focus:ring-0"
-      />
-    </div>
-    <div className="flex flex-col items-center bg-gray-200 p-2 rounded-md">
-      <label className="text-sm">Reps</label>
-      <input
-        type="number"
-        value={exercise.reps || 0}
-        onChange={(e) =>
-          handleInputChange(index, "reps", e.target.value)
-        }
-        className="mt-1 w-full sm:w-16 bg-white p-1 text-center rounded border-gray-300 focus:ring-0"
-      />
-    </div>
-    <div className="flex flex-col items-center bg-gray-200 p-2 rounded-md">
-      <label className="text-sm">Time (S)</label>
-      <input
-        type="number"
-        value={exercise.holdTime || 0}
-        onChange={(e) =>
-          handleInputChange(index, "holdTime", e.target.value)
-        }
-        className="mt-1 w-full sm:w-16 bg-white p-1 text-center rounded border-gray-300 focus:ring-0"
-      />
-    </div>
-    <div className="flex flex-col items-center bg-gray-200 p-2 rounded-md">
-      <label className="text-sm">Weight</label>
-      <input
-        type="number"
-        value={exercise.weight || 0}
-        onChange={(e) =>
-          handleInputChange(index, "weight", e.target.value)
-        }
-        className="mt-1 w-full sm:w-16 bg-white p-1 text-center rounded border-gray-300 focus:ring-0"
-      />
-    </div>
-    <div className="flex flex-col items-center bg-gray-200 p-2 rounded-md">
-      <label className="text-sm">Stage</label>
-      <select
-        value={exercise.stage || "Beginner"}
-        onChange={(e) => {
-          const updatedExercises = [...selectedExercises];
-          updatedExercises[index].stage = e.target.value;
-          setSelectedExercises(updatedExercises);
-        }}
-        className="mt-1 w-full bg-white p-1 rounded border-gray-300 focus:ring-0"
-      >
-        <option value="Beginner">Beginner</option>
-        <option value="Intermediate">Intermediate</option>
-        <option value="Advanced">Advanced</option>
-      </select>
-    </div>
-  </div>
-</div>
+              <button
+                onClick={() => setSessionsPerDay(sessionsPerDay + 1)}
+                className="text-white border w-5 h-15 bg-gray-300 hover:text-gray-700 focus:outline-none"
+              >
+                <span className="text-lg">+</span>
+              </button>
+            </div>
 
-          ))}
-        </div>
-
-        <div className="flex flex-col lg:flex-row justify-between my-10 mt-20 space-y-6 lg:space-y-0">
-  {/* Therapy Days */}
-  <div className="flex flex-col lg:flex-row items-start lg:items-center space-y-4 lg:space-y-0">
-    <label className="mr-4 font-medium">Therapy Days:</label>
-    <div className="flex flex-wrap gap-2">
-      {["M", "Tu", "W", "Th", "F", "S", "Su"].map((day) => (
-        <label key={day} className="flex items-center space-x-1">
-          <input
-            type="checkbox"
-            checked={therapyDays.includes(day)}
-            onChange={() => {
-              setTherapyDays((prev) =>
-                prev.includes(day) ? prev.filter((d) => d !== day) : [...prev, day]
-              );
-            }}
-            className="form-checkbox text-blue-600"
-          />
-          <span className="text-sm">{day}</span>
-        </label>
-      ))}
-    </div>
-  </div>
-
-  {/* Sessions per Day */}
-  <div className="flex flex-col lg:flex-row items-start lg:items-center space-y-4 lg:space-y-0">
-    <label className="mr-4 font-medium">Sessions per Day:</label>
-    <input
-      type="number"
-      value={sessionsPerDay}
-      onChange={(e) => setSessionsPerDay(Math.max(0, Number(e.target.value)))}
-      className="border border-gray-300 rounded-md w-full lg:w-20 p-2 text-center"
-    />
-  </div>
-</div>
-<textarea
-  placeholder="Therapist Notes"
-  value={therapistNotes}
-  onChange={(e) => setTherapistNotes(e.target.value)}
-  className="w-full h-32 p-2 border border-gray-300 rounded-md"
-/>
-
-        <div className="mt-6 p-4 bg-white  rounded-lg ">
-          <div className="flex justify-between mb-4">
-            <button
-              onClick={saveCombo}
-              className="bg-blue-500 text-white px-4 py-2 rounded-md"
-            >
-              Save as Combo
-            </button>
+            <span className="text-gray-500">sessions/day</span>
+          </div>
+          
           </div>
         </div>
+
+         <hr className=" border-1 border-gray-400"/>
+
+        <div className="flex flex-col lg:flex-row justify-between my-10 mt-10 space-y-6 lg:space-y-0">
+          {/* Therapy Days */}
+          <div className="">
+            <div className="flex flex-col lg:flex-row items-start lg:items-center space-y-4 lg:space-y-0">
+              <div className="flex items-center mb-2">
+                <h3 className="mr-4 font-semibold">Day of Week</h3>
+                <button
+                  className="flex items-center px-3 py-1 bg-blue-500 text-white text-sm rounded-md focus:outline-none"
+                  onClick={() =>
+                    setTherapyDays(["M", "Tu", "W", "Th", "F", "S", "Su"])
+                  }
+                >
+                  <input
+                    type="checkbox"
+                    className="mr-2"
+                    checked={therapyDays.length === 7}
+                    readOnly
+                  />
+                  Select All
+                </button>
+              </div>
+            </div>
+            <div className="flex gap-2 my-2 ">
+              {["S", "M", "Tu", "W", "Th", "F", "Su"].map((day) => (
+                <label
+                  key={day}
+                  className={`w-8 h-8 rounded-full flex items-center justify-center cursor-pointer transition-colors ${
+                    therapyDays.includes(day)
+                      ? "bg-blue-500 text-white"
+                      : "bg-gray-300 text-gray-600"
+                  }`}
+                  onClick={() => {
+                    setTherapyDays((prev) =>
+                      prev.includes(day)
+                        ? prev.filter((d) => d !== day)
+                        : [...prev, day]
+                    );
+                  }}
+                >
+                  {day}
+                </label>
+              ))}
+            </div>
+          </div>
+
+          {/* Sessions per Day */}
+          <div className=" flex flex-col gap-3  items-center  space-x-2">
+            <h3 className="font-semibold -ml-10 text-gray-700">Daily Frequency</h3>
+
+           <div className=" flex flex-row">
+           <div className="flex items-center  rounded-md px-2">
+              <button
+                onClick={() =>
+                  setSessionsPerDay(Math.max(0, sessionsPerDay - 1))
+                }
+                className="text-white border w-5 h-15 bg-gray-300 hover:text-gray-700 focus:outline-none"
+              >
+                <span className="text-lg">−</span>
+              </button>
+
+              <input
+                value={sessionsPerDay}
+                onChange={(e) =>
+                  setSessionsPerDay(Math.max(0, Number(e.target.value)))
+                }
+                className="w-12 text-center text-gray-700 focus:outline-none bg-transparent"
+                min="0"
+              />
+
+              <button
+                onClick={() => setSessionsPerDay(sessionsPerDay + 1)}
+                className="text-white border w-5 h-15 bg-gray-300 hover:text-gray-700 focus:outline-none"
+              >
+                <span className="text-lg">+</span>
+              </button>
+            </div>
+
+            <span className="text-gray-500">sessions/day</span>
+           </div>
+          </div>
+        </div>
+        <div className="  space-y-2">
+          <h3 className="font-semibold text-gray-700 text-start">Therapist Notes</h3>
+          <textarea
+            placeholder="Add  Notes"
+            value={therapistNotes}
+            onChange={(e) => setTherapistNotes(e.target.value)}
+            className="w-full h-32 p-2 border border-blue-200 bg-blue-50 rounded-md"
+          />
+        </div>
+
+        <div className="mt-2 p-4 bg-white rounded-lg">
+  <div className="flex justify-end mb-4">
+    <button
+      onClick={saveCombo}
+      className="bg-blue-500 text-white px-4 py-2 rounded-md"
+    >
+      Save as Combo
+    </button>
+  </div>
+</div>
+
         <div className="my-0 p-0  border-2 border-gray-300 bg-white rounded-lg shadow-md h-52 overflow-auto">
           <h3 className="text-lg font-semibold mb-10 sticky top-0  text-center  bg-gray-200 rounded-md h-10">
             Saved Programs

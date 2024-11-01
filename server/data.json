@@ -196,6 +196,36 @@
       "sessionsPerDay": 5,
       "notes": "active",
       "id": null
+    },
+    {
+      "name": "Combo 11/1/2024, 4:57:04 PM",
+      "exercises": [
+        {
+          "exercise": "Bicep Curls",
+          "sets": 7,
+          "reps": 4,
+          "holdTime": 6,
+          "side": "Right",
+          "stage": "Beginner",
+          "weight": 5
+        },
+        {
+          "exercise": "Bicep Curls",
+          "sets": 7,
+          "reps": 4,
+          "holdTime": 6,
+          "side": "Both",
+          "stage": "Beginner",
+          "weight": 5
+        }
+      ],
+      "days": [
+        "Su",
+        "F"
+      ],
+      "sessionsPerDay": 4,
+      "notes": "New Test",
+      "id": null
     }
   ]
 }
