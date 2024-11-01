@@ -250,178 +250,181 @@ const Exercise = () => {
         className="border-t-2 border-gray-300  rounded-md gap-2 my-10 h-[50%] w-auto overflow-auto">
           {selectedExercises.map((exercise, index) => (
             <div
-            
-           draggable
-            onDragStart={() => onDragStart(index)}
-            onDrop={(event) => onDrop(event, index)}
-             key={index} className="mt-4 border-2 border-gray-400 p-4 bg-white rounded-lg shadow-md">
-              <div className="flex items-center justify-between">
-                <span className="text-lg font-semibold text-gray-700">
-                  {exercise.name}
-                </span>
+  draggable
+  onDragStart={() => onDragStart(index)}
+  onDrop={(event) => onDrop(event, index)}
+  key={index}
+  className="mt-4 border-2 border-gray-400 p-4 bg-white rounded-lg shadow-md"
+>
+  <div className="flex flex-col sm:flex-row items-center sm:justify-between space-y-4 sm:space-y-0">
+    <span className="text-lg font-semibold text-gray-700 text-center sm:text-left">
+      {exercise.name}
+    </span>
 
-                <div className="mt-4 flex items-center">
-                  <label className="relative inline-flex items-center cursor-pointer">
-                    <input
-                      type="checkbox"
-                      className="sr-only"
-                      onChange={() => toggleSide(index, "Right")}
-                      checked={exercise.side === "Right"}
-                    />
-                    <div className="w-14 h-8 bg-gray-200 rounded-full shadow-inner"></div>
-                    <div
-                      className={`absolute w-6 h-6 bg-blue-500 rounded-full transition-transform duration-300 ease-in-out ${
-                        exercise.side === "Right"
-                          ? "transform translate-x-full"
-                          : ""
-                      }`}
-     ></div>
-                  </label>
-                </div>
-                
+    <div className="flex items-center space-x-4">
+      <label className="relative inline-flex items-center cursor-pointer">
+        <input
+          type="checkbox"
+          className="sr-only"
+          onChange={() => toggleSide(index, "Right")}
+          checked={exercise.side === "Right"}
+        />
+        <div className="w-14 h-8 bg-gray-200 rounded-full shadow-inner"></div>
+        <div
+          className={`absolute w-6 h-6 bg-blue-500 rounded-full transition-transform duration-300 ease-in-out ${
+            exercise.side === "Right" ? "transform translate-x-full" : ""
+          }`}
+        ></div>
+      </label>
+    </div>
 
-                <div className="relative" ref={dropdownRef}>
-                  <button
-                    onClick={() => toggleDropdownBars(index)}
-                    className="bg-gray-200 p-1 rounded-md"
-                  >
-                    <FontAwesomeIcon icon={faBars} />
-                  </button>
-                  {dropdownVisible[index] && (
-                    <div className="absolute right-0 mt-2 bg-white shadow-lg rounded-md p-2">
-                      <button
-                        onClick={() => duplicateExercise(index, "Left")}
-                        disabled={selectedExercises.some(
-                          (e) => e.id === exercise.id && e.side === "Left"
-                        )}
-                        className="block w-full hover:bg-gray-200 text-left"
-                      >
-                        Duplicate Left
-                      </button>
-                      <button
-                        onClick={() => duplicateExercise(index, "Right")}
-                        disabled={selectedExercises.some(
-                          (e) => e.id === exercise.id && e.side === "Right"
-                        )}
-                        className="block w-full hover:bg-gray-200 text-left"
-                      >
-                        Duplicate Right
-                      </button>
-                    </div>
-                  )}
-                </div>
-                <button
-                    onClick={()=> handleExerciseDelete(index)}
-                    className=" p-1 rounded-md"
-                  >
-                    <FontAwesomeIcon icon={faTrash} className=" text-red-200 w-5 h-5"  />
-                  </button>
-              </div>
+    <div className="relative" ref={dropdownRef}>
+      <button
+        onClick={() => toggleDropdownBars(index)}
+        className="bg-gray-200 p-1 rounded-md"
+      >
+        <FontAwesomeIcon icon={faBars} />
+      </button>
+      {dropdownVisible[index] && (
+        <div className="absolute right-0 mt-2 bg-white shadow-lg rounded-md p-2 w-40">
+          <button
+            onClick={() => duplicateExercise(index, "Left")}
+            disabled={selectedExercises.some(
+              (e) => e.id === exercise.id && e.side === "Left"
+            )}
+            className="block w-full hover:bg-gray-200 text-left"
+          >
+            Duplicate Left
+          </button>
+          <button
+            onClick={() => duplicateExercise(index, "Right")}
+            disabled={selectedExercises.some(
+              (e) => e.id === exercise.id && e.side === "Right"
+            )}
+            className="block w-full hover:bg-gray-200 text-left"
+          >
+            Duplicate Right
+          </button>
+        </div>
+      )}
+    </div>
 
-              <div className="mt-4 grid grid-cols-5 gap-4 items-center">
-                <div className="flex items-center bg-gray-200 p-2 rounded-md">
-                  <label className="mr-2">Sets:</label>
-                  <input
-                    type="number"
-                    value={exercise.sets || 0}
-                    onChange={(e) =>
-                      handleInputChange(index, "sets", e.target.value)
-                    }
-                    className="ml-2 w-10 bg-white p-1 text-center rounded border-gray-300 focus:ring-0"
-                  />
-                </div>
-                <div className="flex items-center bg-gray-200 p-2 rounded-md">
-                  <label className="mr-2">Reps:</label>
-                  <input
-                    type="number"
-                    value={exercise.reps || 0}
-                    onChange={(e) =>
-                      handleInputChange(index, "reps", e.target.value)
-                    }
-                    className="ml-2 w-10 bg-white p-1 text-center rounded border-gray-300 focus:ring-0"
-                  />
-                </div>
-                <div className="flex items-center bg-gray-200 p-2 rounded-md">
-                  <label className="mr-2">Time(S):</label>
-                  <input
-                    type="number"
-                    value={exercise.holdTime || 0}
-                    onChange={(e) =>
-                      handleInputChange(index, "holdTime", e.target.value)
-                    }
-                    className="ml-0 w-10 bg-white p-1 text-center rounded border-gray-300 focus:ring-0"
-                  />
-                </div>
-                <div className="flex items-center bg-gray-200 p-2 rounded-md">
-                  <label className="mr-2">Weight:</label>
-                  <input
-                    type="number"
-                    value={exercise.weight || 0}
-                    onChange={(e) =>
-                      handleInputChange(index, "weight", e.target.value)
-                    }
-                    className="ml-2 w-10 bg-white p-1 text-center rounded border-gray-300 focus:ring-0"
-                  />
-                </div>
-                <div className="flex items-center bg-gray-200 p-2 rounded-md">
-                  <label className="mr-2">Stage:</label>
-                  <select
-                    value={exercise.stage || "Beginner"}
-                    onChange={(e) => {
-                      const updatedExercises = [...selectedExercises];
-                      updatedExercises[index].stage = e.target.value;
-                      setSelectedExercises(updatedExercises);
-                    }}
-                    className="w-full bg-white p-1 rounded border-gray-300 focus:ring-0"
-                  >
-                    <option value="Beginner">Beginner</option>
-                    <option value="Intermediate">Intermediate</option>
-                    <option value="Advanced">Advanced</option>
-                  </select>
-                </div>
-              </div>
-            </div>
+    <button
+      onClick={() => handleExerciseDelete(index)}
+      className="p-1 rounded-md"
+    >
+      <FontAwesomeIcon icon={faTrash} className="text-red-200 w-5 h-5" />
+    </button>
+  </div>
+
+  <div className="mt-4 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+    <div className="flex flex-col items-center bg-gray-200 p-2 rounded-md">
+      <label className="text-sm">Sets</label>
+      <input
+        type="number"
+        value={exercise.sets || 0}
+        onChange={(e) =>
+          handleInputChange(index, "sets", e.target.value)
+        }
+        className="mt-1 w-full sm:w-16 bg-white p-1 text-center rounded border-gray-300 focus:ring-0"
+      />
+    </div>
+    <div className="flex flex-col items-center bg-gray-200 p-2 rounded-md">
+      <label className="text-sm">Reps</label>
+      <input
+        type="number"
+        value={exercise.reps || 0}
+        onChange={(e) =>
+          handleInputChange(index, "reps", e.target.value)
+        }
+        className="mt-1 w-full sm:w-16 bg-white p-1 text-center rounded border-gray-300 focus:ring-0"
+      />
+    </div>
+    <div className="flex flex-col items-center bg-gray-200 p-2 rounded-md">
+      <label className="text-sm">Time (S)</label>
+      <input
+        type="number"
+        value={exercise.holdTime || 0}
+        onChange={(e) =>
+          handleInputChange(index, "holdTime", e.target.value)
+        }
+        className="mt-1 w-full sm:w-16 bg-white p-1 text-center rounded border-gray-300 focus:ring-0"
+      />
+    </div>
+    <div className="flex flex-col items-center bg-gray-200 p-2 rounded-md">
+      <label className="text-sm">Weight</label>
+      <input
+        type="number"
+        value={exercise.weight || 0}
+        onChange={(e) =>
+          handleInputChange(index, "weight", e.target.value)
+        }
+        className="mt-1 w-full sm:w-16 bg-white p-1 text-center rounded border-gray-300 focus:ring-0"
+      />
+    </div>
+    <div className="flex flex-col items-center bg-gray-200 p-2 rounded-md">
+      <label className="text-sm">Stage</label>
+      <select
+        value={exercise.stage || "Beginner"}
+        onChange={(e) => {
+          const updatedExercises = [...selectedExercises];
+          updatedExercises[index].stage = e.target.value;
+          setSelectedExercises(updatedExercises);
+        }}
+        className="mt-1 w-full bg-white p-1 rounded border-gray-300 focus:ring-0"
+      >
+        <option value="Beginner">Beginner</option>
+        <option value="Intermediate">Intermediate</option>
+        <option value="Advanced">Advanced</option>
+      </select>
+    </div>
+  </div>
+</div>
+
           ))}
         </div>
 
-        <div className=" flex justify-between my-10 mt-20 ">
-          <div className="">
-            <label className="mr-4">Therapy Days:</label>
-            {["M", "Tu", "W", "Th", "F", "S", "Su"].map((day) => (
-              <label key={day} className="mr-2">
-                <input
-                  type="checkbox"
-                  checked={therapyDays.includes(day)}
-                  onChange={() => {
-                    setTherapyDays((prev) =>
-                      prev.includes(day)
-                        ? prev.filter((d) => d !== day)
-                        : [...prev, day]
-                    );
-                  }}
-                />
-                {day}
-              </label>
-            ))}
-          </div>
-          <div className="">
-            <label className="mr-4">Sessions per Day:</label>
-            <input
-              type="number"
-              value={sessionsPerDay}
-              onChange={(e) =>
-                setSessionsPerDay(Math.max(0, Number(e.target.value)))
-              }
-              className="border border-gray-300 rounded-md w-16 p-1"
-            />
-          </div>
-        </div>
-        <textarea
-          placeholder="Therapist Notes"
-          value={therapistNotes}
-          onChange={(e) => setTherapistNotes(e.target.value)}
-          className="w-full h-32 p-2 border border-gray-300 rounded-md"
-        />
+        <div className="flex flex-col lg:flex-row justify-between my-10 mt-20 space-y-6 lg:space-y-0">
+  {/* Therapy Days */}
+  <div className="flex flex-col lg:flex-row items-start lg:items-center space-y-4 lg:space-y-0">
+    <label className="mr-4 font-medium">Therapy Days:</label>
+    <div className="flex flex-wrap gap-2">
+      {["M", "Tu", "W", "Th", "F", "S", "Su"].map((day) => (
+        <label key={day} className="flex items-center space-x-1">
+          <input
+            type="checkbox"
+            checked={therapyDays.includes(day)}
+            onChange={() => {
+              setTherapyDays((prev) =>
+                prev.includes(day) ? prev.filter((d) => d !== day) : [...prev, day]
+              );
+            }}
+            className="form-checkbox text-blue-600"
+          />
+          <span className="text-sm">{day}</span>
+        </label>
+      ))}
+    </div>
+  </div>
+
+  {/* Sessions per Day */}
+  <div className="flex flex-col lg:flex-row items-start lg:items-center space-y-4 lg:space-y-0">
+    <label className="mr-4 font-medium">Sessions per Day:</label>
+    <input
+      type="number"
+      value={sessionsPerDay}
+      onChange={(e) => setSessionsPerDay(Math.max(0, Number(e.target.value)))}
+      className="border border-gray-300 rounded-md w-full lg:w-20 p-2 text-center"
+    />
+  </div>
+</div>
+<textarea
+  placeholder="Therapist Notes"
+  value={therapistNotes}
+  onChange={(e) => setTherapistNotes(e.target.value)}
+  className="w-full h-32 p-2 border border-gray-300 rounded-md"
+/>
+
         <div className="mt-6 p-4 bg-white  rounded-lg ">
           <div className="flex justify-between mb-4">
             <button

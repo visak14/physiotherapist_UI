@@ -119,7 +119,83 @@
       "sessionsPerDay": 4,
       "notes": "damn",
       "id": null
+    },
+    {
+      "name": "Combo 11/1/2024, 11:33:55 AM",
+      "exercises": [
+        {
+          "exercise": "Russian Twists",
+          "sets": 0,
+          "reps": 0,
+          "holdTime": 0,
+          "side": "Right",
+          "stage": "Beginner",
+          "weight": 0
+        },
+        {
+          "exercise": "Bicycle Crunches",
+          "sets": 0,
+          "reps": 0,
+          "holdTime": 0,
+          "side": "Both",
+          "stage": "Beginner",
+          "weight": 0
+        },
+        {
+          "exercise": "Plank",
+          "sets": 8,
+          "reps": 4,
+          "holdTime": 33,
+          "side": "Left",
+          "stage": "Intermediate",
+          "weight": 3
+        }
+      ],
+      "days": [
+        "F"
+      ],
+      "sessionsPerDay": 8,
+      "notes": "practice daily",
+      "id": 1
+    },
+    {
+      "name": "Combo 11/1/2024, 12:01:38 PM",
+      "exercises": [
+        {
+          "exercise": "Russian Twists",
+          "sets": 10,
+          "reps": 10,
+          "holdTime": 4,
+          "side": "Both",
+          "stage": "Intermediate",
+          "weight": 4
+        },
+        {
+          "exercise": "Bicep Curls",
+          "sets": 0,
+          "reps": 0,
+          "holdTime": 0,
+          "side": "Both",
+          "stage": "Beginner",
+          "weight": 0
+        },
+        {
+          "exercise": "Bicycle Crunches",
+          "sets": 0,
+          "reps": 0,
+          "holdTime": 0,
+          "side": "Both",
+          "stage": "Beginner",
+          "weight": 0
+        }
+      ],
+      "days": [
+        "Su",
+        "S"
+      ],
+      "sessionsPerDay": 5,
+      "notes": "active",
+      "id": null
     }
-   
   ]
 }
